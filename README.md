@@ -9,7 +9,7 @@ npm install gatsby-source-workable
 
 ## Usage
 
-To use this source you need to supply a Workable API key and your Workable subdomain. You can create a Workable API key by logging into Workable and going to `Integrations > Access Token`. Your subdomain will be the subdomain `.workable.com` in your browser.
+To use this source you need to supply a Workable API key and your Workable subdomain. You can create a Workable API key by logging into Workable and going to `Integrations > Access Token`. You can see your subdomain by logging into Workable and checking the URL, e.g. `mycompany.workable.com`.
 
 Next, edit `gatsby-config.js` to use the plugin:
 ```
