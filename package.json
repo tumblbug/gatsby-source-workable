@@ -2,7 +2,7 @@
   "name": "gatsby-source-workable",
   "version": "1.0.1",
   "description": "Gatsby source plugin for loading job openings from Workable",
-  "main": "index.js",
+  "main": "gatsby-node.js",
   "scripts": {
     "build": "babel src --out-dir ."
   },
