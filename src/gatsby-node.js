@@ -22,7 +22,6 @@ exports.sourceNodes = async ({ boundActionCreators }, { subdomain, apiKey, query
       children: [],
       parent: '__SOURCE__',
       internal: {
-        mediaType: 'application/json',
         type: 'WorkableJob',
         content: jsonString,
         contentDigest: crypto.createHash('md5').update(jsonString).digest('hex'),
