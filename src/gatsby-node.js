@@ -1,24 +1,24 @@
 const crypto = require('crypto')
 const axios = require('axios')
 
-const getJobs = (apiKey, subdomain, queryParams = { state: 'published' }) =>
-  axios.get(`https://${subdomain}.workable.com/spi/v3/jobs`, {
-    params: queryParams,
+exports.sourceNodes = async ({ boundActionCreators: { createNode } }, { subdomain, apiKey, queryParams = { state: 'published' }, fetchJobDetails }) => {
+  const axiosClient = axios.create({
+    baseURL: `https://${subdomain}.workable.com/spi/v3/`,
     headers: {
-      Authorization: `Bearer ${apiKey}`,
-    },
+      Authorization: `Bearer ${apiKey}`
+    }
   })
 
-exports.sourceNodes = async ({ boundActionCreators }, { subdomain, apiKey, queryParams }) => {
-  const { createNode } = boundActionCreators
+  // Get list of all jobs
+  const { data: { jobs } } = await axiosClient.get('/jobs');
 
-  const result = await getJobs(apiKey, subdomain, queryParams)
-  const jobs = result.data.jobs
+  for(const job of jobs) {
+    // Fetch job details if needed
+    const jobData = fetchJobDetails ? (await axiosClient.get(`/jobs/${job.shortcode}`)).data : job;
 
-  jobs.forEach(job => {
-    const jsonString = JSON.stringify(job)
+    const jsonString = JSON.stringify(jobData)
     const gatsbyNode = {
-      ...job,
+      ...jobData,
       children: [],
       parent: '__SOURCE__',
       internal: {
@@ -27,7 +27,7 @@ exports.sourceNodes = async ({ boundActionCreators }, { subdomain, apiKey, query
         contentDigest: crypto.createHash('md5').update(jsonString).digest('hex'),
       },
     }
+    // Insert data into gatsby
     createNode(gatsbyNode)
-    return
-  })
+  }
 }

@@ -7,36 +7,58 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 const crypto = require('crypto');
 const axios = require('axios');
 
-const getJobs = (apiKey, subdomain, queryParams = { state: 'published' }) => axios.get(`https://${subdomain}.workable.com/spi/v3/jobs`, {
-  params: queryParams,
-  headers: {
-    Authorization: `Bearer ${apiKey}`
-  }
-});
-
 exports.sourceNodes = (() => {
-  var _ref = _asyncToGenerator(function* ({ boundActionCreators }, { subdomain, apiKey, queryParams }) {
-    const createNode = boundActionCreators.createNode;
-
-
-    const result = yield getJobs(apiKey, subdomain, queryParams);
-    const jobs = result.data.jobs;
-
-    jobs.forEach(function (job) {
-      const jsonString = JSON.stringify(job);
-      const gatsbyNode = _extends({}, job, {
-        children: [],
-        parent: '__SOURCE__',
-        internal: {
-          mediaType: 'application/json',
-          type: 'WorkableJob',
-          content: jsonString,
-          contentDigest: crypto.createHash('md5').update(jsonString).digest('hex')
-        }
-      });
-      createNode(gatsbyNode);
-      return;
+  var _ref = _asyncToGenerator(function* ({ boundActionCreators: { createNode } }, { subdomain, apiKey, queryParams = { state: 'published' }, fetchJobDetails }) {
+    const axiosClient = axios.create({
+      baseURL: `https://${subdomain}.workable.com/spi/v3/`,
+      headers: {
+        Authorization: `Bearer ${apiKey}`
+      }
     });
+
+    // Get list of all jobs
+
+    var _ref2 = yield axiosClient.get('/jobs');
+
+    const jobs = _ref2.data.jobs;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+
+      for (var _iterator = jobs[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        const job = _step.value;
+
+        // Fetch job details if needed
+        const jobData = fetchJobDetails ? (yield axiosClient.get(`/jobs/${job.shortcode}`)).data : job;
+
+        const jsonString = JSON.stringify(jobData);
+        const gatsbyNode = _extends({}, jobData, {
+          children: [],
+          parent: '__SOURCE__',
+          internal: {
+            type: 'WorkableJob',
+            content: jsonString,
+            contentDigest: crypto.createHash('md5').update(jsonString).digest('hex')
+          }
+          // Insert data into gatsby
+        });createNode(gatsbyNode);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
   });
 
   return function (_x, _x2) {
