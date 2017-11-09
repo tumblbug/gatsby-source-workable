@@ -10,7 +10,7 @@ exports.sourceNodes = async ({ boundActionCreators: { createNode } }, { subdomai
   })
 
   // Get list of all jobs
-  const { data: { jobs } } = await axiosClient.get('/jobs');
+  const { data: { jobs } } = await axiosClient.get('/jobs', { params: queryParams });
 
   for(const job of jobs) {
     // Fetch job details if needed

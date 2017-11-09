@@ -18,7 +18,7 @@ exports.sourceNodes = (() => {
 
     // Get list of all jobs
 
-    var _ref2 = yield axiosClient.get('/jobs');
+    var _ref2 = yield axiosClient.get('/jobs', { params: queryParams });
 
     const jobs = _ref2.data.jobs;
     var _iteratorNormalCompletion = true;
