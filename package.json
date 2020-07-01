@@ -15,14 +15,15 @@
   },
   "homepage": "https://github.com/tumblbug/gatsby-source-workable",
   "keywords": [
-      "gatsby",
-      "gatsby-plugin",
-      "gatsby-source-plugin"
+    "gatsby",
+    "gatsby-plugin",
+    "gatsby-source-plugin"
   ],
   "author": "Bjorn Tegelund <bjorn@tumblbug.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "^0.16.2",
+    "axios-rate-limit": "^1.2.1"
   },
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
