@@ -1,26 +1,22 @@
 const crypto = require("crypto");
 const axios = require("axios");
-const LimitRate = require("axios-rate-limit");
+const rateLimit = require("axios-rate-limit");
 
 exports.sourceNodes = async (
   { boundActionCreators: { createNode } },
   { subdomain, apiKey, queryParams = { state: "published" }, fetchJobDetails }
 ) => {
-  function CreateRateLimitedAxios() {
-    const axiosInstance = axios.create({
-      baseURL: `https://${subdomain}.workable.com/spi/v3/`,
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+  const axiosInstance = axios.create({
+    baseURL: `https://${subdomain}.workable.com/spi/v3/`,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
 
-    return LimitRate(axiosInstance, {
-      maxRequests: 10,
-      perMilliseconds: 10000,
-    });
-  }
-
-  const axiosClient = CreateRateLimitedAxios();
+  const axiosClient = rateLimit(axiosInstance, {
+    maxRequests: 1,
+    perMilliseconds: 10000,
+  });
 
   // Get list of all jobs
   const {
