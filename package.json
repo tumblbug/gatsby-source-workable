@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.16.2",
-    "bottleneck": "^2.19.5"
+    "axios-rate-limit": "^1.2.1"
   },
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
