@@ -1,10 +1,23 @@
 {
-  "name": "gatsby-source-workable",
+  "name": "@lendinvest/gatsby-source-workable",
   "version": "1.1.1",
   "description": "Gatsby source plugin for loading job openings from Workable",
+  "publishConfig": {
+    "registry": "https://npm.eng.lendinvestinternal.com"
+  },
   "main": "gatsby-node.js",
   "scripts": {
-    "build": "babel src --out-dir ."
+    "build": "babel src --out-dir .",
+    "semver": "lendinvest-scripts semver",
+    "tag": "lendinvest-scripts tag"
+  },
+  "husky": {
+    "hooks": {
+      "post-commit": "npm run semver"
+    }
+  },
+  "engines": {
+    "node": "11.8.0"
   },
   "repository": {
     "type": "git",
@@ -15,18 +28,19 @@
   },
   "homepage": "https://github.com/tumblbug/gatsby-source-workable",
   "keywords": [
-      "gatsby",
-      "gatsby-plugin",
-      "gatsby-source-plugin"
+    "gatsby",
+    "gatsby-plugin",
+    "gatsby-source-plugin"
   ],
   "author": "Bjorn Tegelund <bjorn@tumblbug.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "^0.18.1"
   },
   "devDependencies": {
+    "@lendinvest/frontend-scripts": "1.6.8",
+    "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-cli": "^6.26.0"
+    "babel-preset-env": "^1.6.0"
   }
 }
