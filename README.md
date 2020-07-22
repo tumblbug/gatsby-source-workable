@@ -1,5 +1,5 @@
 # gatsby-source-workable
-> Loads job openings from Workable into Gatsby.js HI!
+> Loads job openings from Workable into Gatsby.js 
 
 ## Installation
 
