@@ -9,6 +9,7 @@ exports.sourceNodes = async ({ boundActionCreators: { createNode } }, { subdomai
     }
   })
 
+
   // Get list of all jobs
   const { data: { jobs } } = await axiosClient.get('/jobs', { params: queryParams });
 
@@ -16,9 +17,15 @@ exports.sourceNodes = async ({ boundActionCreators: { createNode } }, { subdomai
     // Fetch job details if needed
     const jobData = fetchJobDetails ? (await axiosClient.get(`/jobs/${job.shortcode}`)).data : job;
 
-    const jsonString = JSON.stringify(jobData)
-    const gatsbyNode = {
+    // Fallback for missing department field
+    const newJobData = {
       ...jobData,
+      department: jobData.department === null ? "" : jobData.department
+    }
+
+    const jsonString = JSON.stringify(newJobData)
+    const gatsbyNode = {
+      ...newJobData,
       children: [],
       parent: '__SOURCE__',
       internal: {

@@ -33,8 +33,13 @@ exports.sourceNodes = (() => {
         // Fetch job details if needed
         const jobData = fetchJobDetails ? (yield axiosClient.get(`/jobs/${job.shortcode}`)).data : job;
 
-        const jsonString = JSON.stringify(jobData);
-        const gatsbyNode = _extends({}, jobData, {
+        // Fallback for missing department field
+        const newJobData = _extends({}, jobData, {
+          department: jobData.department === null ? "" : jobData.department
+        });
+
+        const jsonString = JSON.stringify(newJobData);
+        const gatsbyNode = _extends({}, newJobData, {
           children: [],
           parent: '__SOURCE__',
           internal: {
