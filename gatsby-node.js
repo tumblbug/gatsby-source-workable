@@ -8,7 +8,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 
 exports.sourceNodes = (() => {
-  var _ref = _asyncToGenerator(function* ({ boundActionCreators: { createNode } }, { subdomain, apiKey, queryParams = { state: 'published' }, fetchJobDetails }) {
+  var _ref = _asyncToGenerator(function* ({ actions }, { subdomain, apiKey, queryParams = { state: 'published' }, fetchJobDetails }) {
     const axiosClient = axios.create({
       baseURL: `https://${subdomain}.workable.com/spi/v3/`,
       headers: {
@@ -48,7 +48,7 @@ exports.sourceNodes = (() => {
             contentDigest: crypto.createHash('md5').update(jsonString).digest('hex')
           }
           // Insert data into gatsby
-        });createNode(gatsbyNode);
+        });actions.createNode(gatsbyNode);
       }
     } catch (err) {
       _didIteratorError = true;

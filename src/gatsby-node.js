@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const axios = require('axios')
 
-exports.sourceNodes = async ({ boundActionCreators: { createNode } }, { subdomain, apiKey, queryParams = { state: 'published' }, fetchJobDetails }) => {
+exports.sourceNodes = async ({ actions }, { subdomain, apiKey, queryParams = { state: 'published' }, fetchJobDetails }) => {
   const axiosClient = axios.create({
     baseURL: `https://${subdomain}.workable.com/spi/v3/`,
     headers: {
@@ -35,6 +35,6 @@ exports.sourceNodes = async ({ boundActionCreators: { createNode } }, { subdomai
       },
     }
     // Insert data into gatsby
-    createNode(gatsbyNode)
+    actions.createNode(gatsbyNode)
   }
 }
